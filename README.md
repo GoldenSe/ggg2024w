@@ -4,7 +4,7 @@
 
 **Copyright (c) [2023] [GoldenSe]**
 
-All rights to this project are owned by [Your Name]. This game and its source code are the intellectual property of the author.
+All rights to this project are owned by [GoldenSe]. This game and its source code are the intellectual property of the author.
 
 **User Terms:**
 
@@ -14,7 +14,7 @@ All rights to this project are owned by [Your Name]. This game and its source co
 
 **Contact the Author:**
 
-If you have any questions or wish to obtain permission to use the project, please contact the author at: [your.email@example.com].
+If you have any questions or wish to obtain permission to use the project, please contact the author at: [sealinemine@gmail.com].
 
 ## About the Project
 
@@ -24,7 +24,7 @@ If you have any questions or wish to obtain permission to use the project, pleas
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-repository/gild-seeker.git
+    
     ```
 
 2. Open the project in Unity and import all necessary dependencies.
