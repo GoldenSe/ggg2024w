@@ -2,7 +2,7 @@
 
 ## Copyright and License
 
-**Copyright (c) [Year] [Your Name]**
+**Copyright (c) [2023] [GoldenSe]**
 
 All rights to this project are owned by [Your Name]. This game and its source code are the intellectual property of the author.
 
