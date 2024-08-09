@@ -1,111 +1,132 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | Horse</title>
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-      }
-      #unity-canvas {
-        display: block;
-        margin: 0 auto;
-      }
-      #loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-      }
-      #loading-bar {
-        width: 80%;
-        max-width: 600px;
-        height: 20px;
-        background: #fff;
-        border-radius: 10px;
-        overflow: hidden;
-        position: relative;
-      }
-      #loading-progress {
-        height: 100%;
-        background: #4caf50;
-        width: 0;
-        transition: width 0.4s ease;
-      }
-      #loading-text {
-        position: absolute;
-        width: 100%;
-        text-align: center;
-        color: #000;
-        font-weight: bold;
-        line-height: 20px;
-      }
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #unity-canvas {
+            display: block;
+            margin: 0 auto;
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #loading-bar {
+            width: 80%;
+            max-width: 600px;
+            height: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        #loading-progress {
+            height: 100%;
+            background: #4caf50;
+            width: 0;
+            transition: width 0.4s ease;
+        }
+        #loading-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #000;
+            font-weight: bold;
+            line-height: 20px;
+        }
+        /* Hide Unity loading logo and text */
+        #unity-logo {
+            display: none !important;
+        }
+        #unity-container {
+            display: none !important;
+        }
     </style>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+</head>
+<body>
     <div id="loading-overlay">
-      <div id="loading-bar">
-        <div id="loading-progress"></div>
-        <div id="loading-text">Loading...</div>
-      </div>
+        <div id="loading-bar">
+            <div id="loading-progress"></div>
+            <div id="loading-text">Loading...</div>
+        </div>
     </div>
     <canvas id="unity-canvas" width="960" height="600" tabindex="-1" style="width: 960px; height: 600px; background: #0E0E0E"></canvas>
     <script src="Build/game.loader.js"></script>
     <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            var meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+            document.getElementsByTagName('head')[0].appendChild(meta);
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
+            var canvas = document.querySelector("#unity-canvas");
+            canvas.style.width = "100%";
+            canvas.style.height = "100%";
+            canvas.style.position = "fixed";
 
-        document.body.style.textAlign = "left";
-      }
-
-      // Create Unity instance
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/game.data",
-        frameworkUrl: "Build/game.framework.js",
-        codeUrl: "Build/game.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Horse",
-        productVersion: "1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      }).then((unityInstance) => {
-        // Hide the loading overlay when the Unity instance is ready
-        document.getElementById('loading-overlay').style.display = 'none';
-      }).catch((message) => {
-        console.error(message);
-      });
-
-      // Example progress update (you can remove this if you don't need it)
-      // Simulate loading progress
-      let progress = 0;
-      const progressInterval = setInterval(() => {
-        progress += 10;
-        document.getElementById('loading-progress').style.width = progress + '%';
-        document.getElementById('loading-text').textContent = 'Loading... ' + progress + '%';
-        if (progress >= 100) {
-          clearInterval(progressInterval);
+            document.body.style.textAlign = "left";
         }
-      }, 500);
+
+        // Create Unity instance
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+            dataUrl: "Build/game.data",
+            frameworkUrl: "Build/game.framework.js",
+            codeUrl: "Build/game.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "DefaultCompany",
+            productName: "Horse",
+            productVersion: "1.0",
+        }).then((unityInstance) => {
+            unityInstance.Module.onRuntimeInitialized = () => {
+                document.getElementById('loading-overlay').style.display = 'none';
+            };
+
+            // Handling additional loading stages (if needed)
+            unityInstance.Module.addRunDependency('unity-ready');
+
+            // You can remove this line if it's not needed
+            unityInstance.Module.removeRunDependency('unity-ready');
+            
+            // Remove Unity loading indicators
+            var unityLogo = document.getElementById('unity-logo');
+            var unityContainer = document.getElementById('unity-container');
+            if (unityLogo) {
+                unityLogo.style.display = 'none';
+            }
+            if (unityContainer) {
+                unityContainer.style.display = 'none';
+            }
+
+        }).catch((message) => {
+            console.error(message);
+        });
+
+        // Example progress update (optional, you can remove this)
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 10;
+            document.getElementById('loading-progress').style.width = progress + '%';
+            document.getElementById('loading-text').textContent = 'Loading... ' + progress + '%';
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+            }
+        }, 500);
     </script>
-  </body>
+</body>
 </html>
