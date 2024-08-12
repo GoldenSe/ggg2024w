@@ -33,6 +33,26 @@
         background-color: #00aaff;
         border-radius: 15px 0 0 15px;
         transition: width 0.2s ease;
+        position: relative;
+      }
+
+      /* Стили для анимации кирки */
+      #pickaxe {
+        position: absolute;
+        bottom: -40px; /* Расположение кирки под шкалой прогресса */
+        left: 0;
+        width: 40px;
+        height: 40px;
+        background: url('pickaxe.png') no-repeat center center;
+        background-size: contain;
+        animation: swing 0.5s infinite;
+      }
+
+      /* Анимация качания кирки */
+      @keyframes swing {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(-45deg); }
+        100% { transform: rotate(0deg); }
       }
 
       /* Скрываем canvas до загрузки игры */
@@ -43,7 +63,9 @@
   </head>
   <body style="text-align: center;">
     <div id="progress-bar-container">
-      <div id="progress-bar"></div>
+      <div id="progress-bar">
+        <div id="pickaxe"></div> <!-- Кирка внутри прогресс-бара -->
+      </div>
     </div>
     <canvas id="unity-canvas" width="960" height="600" tabindex="-1" style="width: 960px; height: 600px; background-color: #000;"></canvas>
     <script src="Build/game.loader.js"></script>
@@ -64,6 +86,7 @@
       }
 
       var progressBar = document.getElementById('progress-bar');
+      var pickaxe = document.getElementById('pickaxe');
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/game.data",
@@ -74,7 +97,11 @@
         productName: "Horse",
         productVersion: "1.0",
         onProgress: function(unityInstance, progress) {
+          console.log("Loading progress: " + (progress * 100) + "%");
           progressBar.style.width = (progress * 100) + '%';
+
+          // Обновляем позицию кирки
+          pickaxe.style.left = (progress * 100) + '%';
         }
       }).then(function(unityInstance) {
         // Убираем прогресс-бар после завершения загрузки
