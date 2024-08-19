@@ -1,46 +1,52 @@
-# Gild Seeker
+# flappy-bird-server
 
-## Copyright and License
+Also see [ARCHITECTURE.md](/ARCHITECTURE.md)
 
-**Copyright (c) [2023] [GoldenSe]**
+## What's in the box
+The example contains:
+* Creating jetton - a game currency to reward players.
+* Connect a TON wallet. Connect a wallet to earn game coins and win NFTs.
+* Rewarding users with NFTs. In the example we reward users for the first and the fifth game.
+* Buy game props in the shop.
 
-All rights to this project are owned by [GoldenSe]. This game and its source code are the intellectual property of the author.
+## Setting up
+To run the project locally you need to setup: Telegram bot, [Telegram Mini App](https://core.telegram.org/bots/webapps), Ngrok (proxy), Pinata (IPFS).
 
-**User Terms:**
+### Ngrok
+> Ngrok is used to expose your local server to the internet. It's necessary to make your app accessible to Telegram via real domain name with SSL enabled. For example, your `http://localhost:3000` will be available at `https://your-domain.ngrok.io`.
 
-- **No Copying**: You may not copy, distribute, or use this game and its source code for commercial purposes without explicit permission from the author.
-- **No Modifications**: You may not modify the source code, materials, or any part of the project without explicit permission from the author.
-- **No Redistribution**: You may not distribute, share, or transfer modified versions of the game or its source code.
+> You can use any other proxy service: [localtunnel](https://theboroer.github.io/localtunnel-www/), [localhost.run](https://localhost.run/), etc. To integrate one to the setup just edit `workspaces/client/expose-localhost.js` file.
 
-**Contact the Author:**
+Create and setup your [Ngrok account](https://dashboard.ngrok.com/get-started/your-authtoken). After getting your auth token, [create a domain](https://dashboard.ngrok.com/cloud-edge/domains).
 
-If you have any questions or wish to obtain permission to use the project, please contact the author at: [sealinemine@gmail.com].
+### Pinata
+> Pinata is decentralized file system used to store your game assets, like achievement badges.
 
-## About the Project
+Create and setup your [Pinata account](https://app.pinata.cloud/developers/api-keys). You can select admin privileges for your API key. Save your `API key` and `API secret`. You can not to reveal `API secret` again.
 
-**Gild Seeker** is an engaging game where players search for and collect gold while managing resources and upgrading their tools. The game features unique mechanics related to time and resource management, making it both exciting and strategic.
+### Telegram bot & Telegram Web App
+1. Create a Telegram bot using `/newbot` command of [BotFather](https://t.me/botfather). Save your bot token.
+1. Run `/newapp` select your bot to link it with your Telegram Mini App. Enter app name, description, `640x360` px image. Specify domain when the game will be hosted (use domain you got from Ngrok). Then input your game short name for the URL. You will receive full game URL inside of Telegram, e. g.: `https://t.me/flappybirddevbot/flappybirddev` Save it.
 
-## Installation
+### Environment variables
+Run `./setup.sh`. Follow the instructions. You are ready to go!
+>If you use Windows you can run in from `Git Bash CLI` which comes with `Git` or you can run the project using [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-1. Clone the repository:
-    ```bash
-    
-    ```
+## Running
 
-2. Open the project in Unity and import all necessary dependencies.
+To run manually use `npm run dev` command.
 
-3. Build the project for your target platform.
+To run with Docker use `docker-compose -f ./docker-compose.dev.yaml up` command.
+>Ensure you have [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) installed. Run Docker.
 
-## How to Play
+## Connect Wallet implementation
 
-1. Use the "Search" button to start mining for gold. Ensure you have an active pickaxe.
-2. Purchase new pickaxes if the current one wears out.
-3. Withdraw gold using the "Withdraw Gold" button to send it to Telegram.
+There are two ways to connect a wallet to the game: connect-ui which is implemented as HTML UI and canvas version of the button. Canvas button is in beta, so it supports only Telegram Wallet.
 
-## Contributing
+To try both options you can change `CONNECT_UI` variable in `workspaces/client/src/index.ts` file.
 
-If you would like to contribute to the project, please contact the author to discuss possible changes or improvements.
+## Migrations
 
----
-
-Thank you for using **Gild Seeker**! We hope you enjoy the game.
+* Create a new migration after changing entities `npm run typeorm:generate-migration --name=[NAME]`
+* Create an empty migration (for seeding, etc.) `npm run typeorm:create-migration --name=[NAME]`
+* Run migrations `npm run typeorm:run-migrations`

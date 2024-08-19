@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: workspaces/server/Dockerfile
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./workspaces/server/src:/app/workspaces/server/src
+    command: npm run start --workspace=server
+  client:
+    build:
+      context: .
+      dockerfile: workspaces/client/Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - .env
+    environment:
+      - IS_DOCKER=true
+    volumes:
+      - ./workspaces/client/src:/app/workspaces/client/src
+    command: npm run start --workspace=client
+
